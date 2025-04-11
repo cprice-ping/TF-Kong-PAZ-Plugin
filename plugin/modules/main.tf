@@ -8,10 +8,10 @@ resource "kubernetes_config_map" "kong_plugin_ping_auth_config" {
 
   data = {
     "access.lua" = var.access_lua
-    "constants.lua" = var.constants_lua
+    "network_handler.lua" = var.network_handler_lua
     "handler.lua" = var.handler_lua
     "schema.lua" = var.schema_lua
-    "utils.lua" = var.utils_lua
+    "response.lua" = var.response_lua
   }
 }
 
@@ -19,7 +19,7 @@ variable "access_lua" {
   type = string
 }
 
-variable "constants_lua" {
+variable "network_handler_lua" {
   type = string
 }
 
@@ -31,7 +31,7 @@ variable "schema_lua" {
   type = string
 }
 
-variable "utils_lua" {
+variable "response_lua" {
   type = string
 }
 
