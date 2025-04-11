@@ -1,0 +1,35 @@
+admin:
+  enabled: true
+  http:
+    containerPort: 8001
+    enabled: true
+    servicePort: 8001
+env:
+  database: "off"
+  declarative_config: /kong_paz/declarative/kong.yml
+  plugins: bundled,ping-auth
+  prefix: /kong_paz/
+extraConfigMaps:
+- mountPath: /kong-paz/custom-plugin/ping-auth
+  name: kong-plugin-ping-auth
+- mountPath: /kong/declarative
+  name: kong-test-config
+image:
+  repository: kong
+ingressController:
+  enabled: false
+plugins:
+  configMaps:
+  - name: kong-plugin-ping-auth
+    pluginName: ping-auth
+proxy:
+  enabled: true
+  http:
+    containerPort: 8000
+    enabled: true
+    servicePort: 80
+  tls:
+    containerPort: 8443
+    enabled: true
+    servicePort: 443
+  type: NodePort
