@@ -1,0 +1,27 @@
+image:
+  repository: pricecs/kong-paz
+  tag: 0.0.1
+admin:
+  enabled: true
+env:
+  database: "off"
+  plugins: bundled,ping-auth
+dblessConfig:
+  configMap: kong-declarative-config
+# plugins:
+#   configMaps:
+#   - pluginName: ping-auth
+#     name: kong-plugin-ping-auth
+proxy:
+  enabled: true
+  http:
+    containerPort: 8000
+    enabled: true
+    servicePort: 80
+  tls:
+    containerPort: 8443
+    enabled: true
+    servicePort: 443
+  type: NodePort
+ingressController:
+  enabled: false
