@@ -18,10 +18,6 @@ plugins:
   enabled: true
   config:
     # Ping Authorize
-    service_url: ${serviceUrl}
+    service_url: "https://${serviceUrl}"
     secret_header_name: CLIENT-TOKEN
     shared_secret: ${pluginSharedSecret}
-    # PingOne Authorize
-    # service_url: {{ .p1azServiceUrl }}
-    # secret_header_name: CLIENT-TOKEN
-    # shared_secret: {{ .pluginGatewayCredential }}

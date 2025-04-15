@@ -33,3 +33,6 @@ override.tf.json
 .terraformrc
 terraform.rc
 .terraform.lock.hcl
+deployment/.DS_Store
+.DS_Store
+.DS_Store

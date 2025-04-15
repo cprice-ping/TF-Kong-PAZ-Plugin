@@ -6,9 +6,9 @@ resource "helm_release" "paz" {
 
   values = [
     templatefile("paz.yaml.tpl", {
-      externalUrl = var.externalUrl,
-      oidcWellKnownEndpoint = var.oidcWellKnownEndpoint,
-      clientId = var.clientId,
+      externalUrl = data.kubernetes_ingress_v1.pap_ingress.spec.0.rule.0.host,
+      oidcWellKnownEndpoint = "https://auth.pingone.${local.pingone_domain}/${data.pingone_environments.administrators.ids[0]}/as/.well-known/openid-configuration"
+      clientId = pingone_application.pap_logon.id
       papSharedSecret = var.papSharedSecret,
       pluginSharedSecret = var.pluginSharedSecret
     })
@@ -19,5 +19,12 @@ data "kubernetes_service" "paz_service" {
   metadata {
     namespace = var.namespace
     name      = "${var.deployName}-pingauthorize"
+  }
+}
+
+data "kubernetes_ingress_v1" "pap_ingress" {
+  metadata {
+    namespace = var.namespace
+    name      = "${var.deployName}-pingauthorizepap"
   }
 }

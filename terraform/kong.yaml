@@ -2,16 +2,12 @@ image:
   repository: pricecs/kong-paz
   tag: 0.0.1
 admin:
-  enabled: true
+  enabled: false
 env:
   database: "off"
   plugins: bundled,ping-auth
 dblessConfig:
   configMap: kong-declarative-config
-# plugins:
-#   configMaps:
-#   - pluginName: ping-auth
-#     name: kong-plugin-ping-auth
 proxy:
   enabled: true
   http:
