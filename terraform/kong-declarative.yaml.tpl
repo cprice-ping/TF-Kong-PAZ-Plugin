@@ -18,6 +18,6 @@ plugins:
   enabled: true
   config:
     # Ping Authorize
-    service_url: "https://${serviceUrl}"
+    service_url: "${serviceUrl}"
     secret_header_name: CLIENT-TOKEN
     shared_secret: ${pluginSharedSecret}

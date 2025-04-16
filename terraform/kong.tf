@@ -19,8 +19,8 @@ resource "kubernetes_config_map" "kong_declarative_config" {
   }
   data = {
     "kong.yml" = templatefile("./kong-declarative.yaml.tpl", {
-      pluginSharedSecret = var.pluginSharedSecret,
-      serviceUrl = data.kubernetes_service.paz_service.metadata.0.name
+      pluginSharedSecret = pingone_gateway_credential.kong_api_gateway.credential,
+      serviceUrl = "https://http-access-api.pingone.${local.pingone_domain}/v1/environments/${pingone_environment.kong_token_provider.id}"
     })
   }
   depends_on = [data.kubernetes_service.paz_service]

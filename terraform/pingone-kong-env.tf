@@ -17,6 +17,9 @@ resource "pingone_environment" "kong_token_provider" {
     license_id = data.pingone_licenses.find_license.ids[0]
     services = [ {
       type = "SSO"
+    },
+    {
+      type = "Authorize"
     } ]
     name = var.deployName
 }
@@ -27,7 +30,7 @@ resource "pingone_population_default" "default_population" {
   name        = "Default"
 }
 
-# Create OIDC Login App for PAP
+# Create Kong Token app
 resource "pingone_application" "kong_tokens" {
   environment_id = pingone_environment.kong_token_provider.id
   name           = "Kong Tokens"
@@ -42,29 +45,14 @@ resource "pingone_application" "kong_tokens" {
   }
 }
 
-locals {
-  openid_standard_scopes_kong = [
-    "email",
-    "profile",
-  ]
-}
+# resource "pingone_application_resource_grant" "kong_token_resource_grants" {
+#   environment_id = pingone_environment.kong_token_provider.id
+#   application_id = pingone_application.kong_tokens.id
 
-data "pingone_resource_scope" "openid_connect_standard_scope_kong" {
-  for_each = toset(local.openid_standard_scopes_kong)
+#   resource_type      = "CUSTOM"
+#   custom_resource_id = pingone_resource.kong_resource.id
 
-  environment_id = pingone_environment.kong_token_provider.id
-  resource_type  = "OPENID_CONNECT"
-
-  name = each.key
-}
-
-resource "pingone_application_resource_grant" "kong_token_resource_grants" {
-  environment_id = pingone_environment.kong_token_provider.id
-  application_id = pingone_application.kong_tokens.id
-
-  resource_type = "OPENID_CONNECT"
-
-  scopes = concat([
-    for scope in data.pingone_resource_scope.openid_connect_standard_scope_kong : scope.id
-    ])
-}
+#   scopes = [
+#     pingone_resource_scope.kong_resource_scope.id
+#   ]
+# }

@@ -7,6 +7,7 @@ resource "helm_release" "paz" {
   values = [
     templatefile("paz.yaml.tpl", {
       externalUrl = data.kubernetes_ingress_v1.pap_ingress.spec.0.rule.0.host,
+      defaultDomain = var.deployDomain,
       oidcWellKnownEndpoint = "https://auth.pingone.${local.pingone_domain}/${data.pingone_environments.administrators.ids[0]}/as/.well-known/openid-configuration"
       clientId = pingone_application.pap_logon.id
       papSharedSecret = var.papSharedSecret,

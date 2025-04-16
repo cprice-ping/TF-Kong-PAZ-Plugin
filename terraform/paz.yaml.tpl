@@ -4,7 +4,7 @@ global:
   ingress:
     enabled: true
     addReleaseNameToHost: append
-    defaultDomain: ping-devops.com
+    defaultDomain: ${defaultDomain}
     annotations:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
       kubernetes.io/ingress.class: "nginx-public"
@@ -17,6 +17,7 @@ pingauthorize:
     PLUGIN_SHARED_SECRET: ${pluginSharedSecret}
     SERVER_PROFILE_URL: https://github.com/cprice-ping/TF-Kong-PAZ-Plugin.git
     SERVER_PROFILE_PATH: server-profiles/pingauthorize
+    DEBUG: "true"
 
 pingauthorizepap:
   enabled: true
