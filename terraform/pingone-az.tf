@@ -55,3 +55,50 @@ resource "pingone_resource_scope" "kong_resource_scope" {
 
     name = each.key
 }
+
+resource "pingone_application_resource_grant" "kong_token_resource_grants" {
+  environment_id = pingone_environment.kong_token_provider.id
+  application_id = pingone_application.kong_tokens.id
+
+  resource_type      = "CUSTOM"
+  custom_resource_id = pingone_resource.kong_resource.id
+
+  scopes = concat([
+    for scope in pingone_resource_scope.kong_resource_scope : scope.id
+    ])
+}
+
+resource "pingone_application_resource" "kong_application_resource" {
+  environment_id = pingone_environment.kong_token_provider.id
+  resource_name  = pingone_resource.kong_resource.name
+
+  name        = "Metadata"
+  description = "Metadata API controls"
+}
+
+variable "kong_media_permissions" {
+  type = map(object({
+    action      = string
+    description = string
+  }))
+  default = {
+    "read" = {
+      action      = "Read_All"
+      description = "Read all Metadata"
+    },
+    "create" = {
+      action      = "Read_One"
+      description = "Read single Metadata object"
+    },
+  }
+}
+
+resource "pingone_application_resource_permission" "media_permissions" {
+  for_each = var.kong_media_permissions
+
+  environment_id          = pingone_environment.kong_token_provider.id
+  application_resource_id = pingone_application_resource.kong_application_resource.id
+
+  action      = each.value.action
+  description = each.value.description
+}

@@ -44,15 +44,3 @@ resource "pingone_application" "kong_tokens" {
     redirect_uris              = ["https://decoder.pingidentity.cloud/oidc", "https://decoder.pingidentity.cloud/implicit", "https://decoder.pingidentity.cloud/hybrid"]
   }
 }
-
-# resource "pingone_application_resource_grant" "kong_token_resource_grants" {
-#   environment_id = pingone_environment.kong_token_provider.id
-#   application_id = pingone_application.kong_tokens.id
-
-#   resource_type      = "CUSTOM"
-#   custom_resource_id = pingone_resource.kong_resource.id
-
-#   scopes = [
-#     pingone_resource_scope.kong_resource_scope.id
-#   ]
-# }
