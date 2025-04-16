@@ -43,6 +43,10 @@ resource "pingone_application" "pap_logon" {
     token_endpoint_auth_method = "NONE"
     redirect_uris              = ["https://pingauthorizepap-${var.deployName}.${var.deployDomain}/idp-callback"]
     post_logout_redirect_uris  = ["https://pingauthorizepap-${var.deployName}.${var.deployDomain}"]
+    cors_settings = {
+      behavior = "ALLOW_SPECIFIC_ORIGINS"
+      origins = ["https://pingauthorizepap-${var.deployName}.${var.deployDomain}"]
+    }
   }
 }
 
