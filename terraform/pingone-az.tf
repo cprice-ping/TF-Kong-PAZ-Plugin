@@ -8,25 +8,6 @@ resource "pingone_resource" "kong_resource" {
   access_token_validity_seconds = 3600
 }
 
-resource "pingone_authorize_api_service" "kong_api_service" {
-  environment_id = pingone_environment.kong_token_provider.id
-
-  name = "Kong - API service"
-
-  base_urls = [
-    "https://${var.kongName}.${var.deployDomain}"
-  ]
-
-  authorization_server = {
-    resource_id = pingone_resource.kong_resource.id
-    type        = "PINGONE_SSO"
-  }
-
-  directory = {
-    type = "PINGONE_SSO"
-  }
-}
-
 resource "pingone_gateway" "kong_api_gateway" {
   environment_id = pingone_environment.kong_token_provider.id
   name           = "Kong API Gateway"
@@ -49,11 +30,11 @@ locals {
 }
 
 resource "pingone_resource_scope" "kong_resource_scope" {
-    for_each = toset(local.kong_resource_scopes)
-    environment_id = pingone_environment.kong_token_provider.id
-    resource_id    = pingone_resource.kong_resource.id
+  for_each       = toset(local.kong_resource_scopes)
+  environment_id = pingone_environment.kong_token_provider.id
+  resource_id    = pingone_resource.kong_resource.id
 
-    name = each.key
+  name = each.key
 }
 
 resource "pingone_application_resource_grant" "kong_token_resource_grants" {
@@ -65,7 +46,7 @@ resource "pingone_application_resource_grant" "kong_token_resource_grants" {
 
   scopes = concat([
     for scope in pingone_resource_scope.kong_resource_scope : scope.id
-    ])
+  ])
 }
 
 resource "pingone_application_resource" "kong_application_resource" {
@@ -101,4 +82,41 @@ resource "pingone_application_resource_permission" "media_permissions" {
 
   action      = each.value.action
   description = each.value.description
+}
+
+resource "pingone_authorize_api_service" "media_api_service" {
+  environment_id = pingone_environment.kong_token_provider.id
+
+  name = "Media API"
+
+  base_urls = [
+    "https://${var.kongName}.${var.deployDomain}/media",
+  ]
+
+  authorization_server = {
+    resource_id = pingone_resource.kong_resource.id
+    type        = "PINGONE_SSO"
+  }
+}
+
+resource "pingone_authorize_api_service_operation" "media_metadata_operation" {
+  environment_id = pingone_environment.kong_token_provider.id
+  api_service_id = pingone_authorize_api_service.media_api_service.id
+
+  name = "Metadata Endpoint"
+
+  methods = [
+    "GET"
+  ]
+
+  paths = [
+    {
+      pattern = "/metadata"
+      type    = "EXACT"
+    },
+    {
+      pattern = "/metadata/{id}"
+      type    = "PARAMETER"
+    },
+  ]
 }

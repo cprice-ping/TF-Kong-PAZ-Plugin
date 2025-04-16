@@ -1,5 +1,5 @@
 output "pap_logon" {
-  value = "https://${data.kubernetes_ingress_v1.pap_ingress.spec.0.rule.0.host}"
+  value = "https://pingauthorizepap-${var.deployName}.${var.deployDomain}"
 }
 
 output "kong_tokens" {
@@ -7,5 +7,6 @@ output "kong_tokens" {
 }
 
 output "kong_url" {
-  value = "https://${kubernetes_ingress_v1.kong_ingress.spec.0.rule.0.host}"
+  value = "https://${var.kongName}.${var.deployDomain}"
 }
+

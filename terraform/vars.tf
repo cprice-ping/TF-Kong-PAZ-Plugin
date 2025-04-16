@@ -36,13 +36,13 @@ variable "clientId" {
 variable "papSharedSecret" {
   type        = string
   description = "Shared Secret between PAZ and PAP"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "pluginSharedSecret" {
   type        = string
   description = "Shared Secret between PAZ and Kong ping-auth plugin"
-  sensitive = true
+  sensitive   = true
 }
 
 # PingOne
@@ -65,7 +65,7 @@ variable "licenseName" {
 variable "environmentId" {
   type        = string
   description = "Environment ID where Worker is"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "workerId" {
@@ -76,7 +76,7 @@ variable "workerId" {
 variable "workerSecret" {
   type        = string
   description = "P1 Worker Secret"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "adminUserName" {
@@ -89,6 +89,6 @@ locals {
   europe         = var.regionCode == "EU" ? "eu" : ""
   canada         = var.regionCode == "CA" ? "ca" : ""
   asia_pacific   = var.regionCode == "AP" ? "asia" : ""
-  australia = var.regionCode == "AU" ? "com.au" : ""
+  australia      = var.regionCode == "AU" ? "com.au" : ""
   pingone_domain = coalesce(local.north_america, local.europe, local.canada, local.asia_pacific, local.australia)
 }

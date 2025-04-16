@@ -9,21 +9,29 @@ resource "helm_release" "kong" {
   values = [
     "${file("kong.yaml")}"
   ]
-  depends_on = [ kubernetes_config_map.kong_declarative_config ]
+  depends_on = [kubernetes_config_map.kong_declarative_config]
 }
 
 resource "kubernetes_config_map" "kong_declarative_config" {
   metadata {
-    name = "kong-declarative-config"
+    name      = "kong-declarative-config"
     namespace = var.namespace
   }
+  # P1AZ Values
   data = {
     "kong.yml" = templatefile("./kong-declarative.yaml.tpl", {
       pluginSharedSecret = pingone_gateway_credential.kong_api_gateway.credential,
-      serviceUrl = "https://http-access-api.pingone.${local.pingone_domain}/v1/environments/${pingone_environment.kong_token_provider.id}"
+      serviceUrl         = "https://http-access-api.pingone.${local.pingone_domain}/v1/environments/${pingone_environment.kong_token_provider.id}"
     })
   }
-  depends_on = [data.kubernetes_service.paz_service]
+
+  # PAZ \ PAP Values
+  # data = {
+  #   "kong.yml" = templatefile("./kong-declarative.yaml.tpl", {
+  #     pluginSharedSecret = pingone_gateway_credential.kong_api_gateway.credential,
+  #     serviceUrl = "https://http-access-api.pingone.${local.pingone_domain}/v1/environments/${pingone_environment.kong_token_provider.id}"
+  #   })
+  # }
 }
 
 resource "kubernetes_ingress_v1" "kong_ingress" {

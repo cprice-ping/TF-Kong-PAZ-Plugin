@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     pingone = {
-      source  = "pingidentity/pingone"
+      source = "pingidentity/pingone"
     }
   }
 }
