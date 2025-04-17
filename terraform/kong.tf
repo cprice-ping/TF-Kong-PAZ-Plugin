@@ -28,8 +28,8 @@ resource "kubernetes_config_map" "kong_declarative_config" {
   # PAZ \ PAP Values
   # data = {
   #   "kong.yml" = templatefile("./kong-declarative.yaml.tpl", {
-  #     pluginSharedSecret = pingone_gateway_credential.kong_api_gateway.credential,
-  #     serviceUrl = "https://http-access-api.pingone.${local.pingone_domain}/v1/environments/${pingone_environment.kong_token_provider.id}"
+  #     pluginSharedSecret = var.pluginSecret,
+  #     serviceUrl = "https://${var.deployName}-pingauthorize"
   #   })
   # }
 }
