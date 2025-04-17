@@ -25,5 +25,6 @@ dsconfig create-external-server \
 
 dsconfig create-access-token-validator \
 	--validator-name "PingOne OIDC" \
-	--type jwt --set enabled:true \
+	--type jwt \
+	--set enabled:true \
 	--set "authorization-server:PingOne OIDC"
