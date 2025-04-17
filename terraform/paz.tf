@@ -12,8 +12,8 @@ resource "helm_release" "paz-pap" {
       clientId              = pingone_application.pap_logon.id
       papSharedSecret       = var.papSharedSecret
       pluginSharedSecret    = var.pluginSharedSecret
-      pazHostname =  "https://pingauthorize-${var.deployName}"
-      pazHostPort = 443
+      # papHostname =  "pingauthorizepap-${var.deployName}"
+      # papHostPort = "8443"
     })
   ]
 }

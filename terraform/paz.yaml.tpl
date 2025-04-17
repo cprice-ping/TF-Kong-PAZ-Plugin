@@ -15,8 +15,6 @@ pingauthorize:
     PING_IDENTITY_ACCEPT_EULA: "YES"
     DECISION_POINT_SHARED_SECRET: ${papSharedSecret}
     PLUGIN_SHARED_SECRET: ${pluginSharedSecret}
-    PAZP_ENGINE_PRIVATE_HOSTNAME: ${pazHostname}
-    PAZP_ENGINE_PRIVATE_PORT: "${pazHostPort}"
     SERVER_PROFILE_URL: https://github.com/cprice-ping/TF-Kong-PAZ-Plugin.git
     SERVER_PROFILE_PATH: server-profiles/pingauthorize
 
