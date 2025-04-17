@@ -12,7 +12,7 @@ resource "helm_release" "paz-pap" {
       clientId              = pingone_application.pap_logon.id
       papSharedSecret       = var.papSharedSecret
       pluginSharedSecret    = var.pluginSharedSecret
-      oidcProvider = "https://auth.pingone.${local.pingone_domain}/${pingone_environment.kong_token_provider.id}/as/token"
+      oidcProvider = "https://auth.pingone.${local.pingone_domain}/${pingone_environment.kong_token_provider.id}/as"
     })
   ]
 }

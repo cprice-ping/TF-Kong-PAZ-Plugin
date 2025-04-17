@@ -21,5 +21,11 @@ dsconfig set-policy-decision-service-prop \
 dsconfig create-external-server \
 	--server-name "PingOne OIDC" \
 	--type http \
-	--set base-url:${PINGONE_OIDC_PROVIDER}
+	--set base-url:${PINGONE_OIDC_PROVIDER}/token
 
+dsconfig create-access-token-validator 
+--validator-name "PingOne OIDC" 
+--type jwt 
+--set enabled:true 
+--set "authorization-server:PingOne OIDC" 
+--set jwks-endpoint-path:${PINGONE_OIDC_PROVIDER}/jwks
