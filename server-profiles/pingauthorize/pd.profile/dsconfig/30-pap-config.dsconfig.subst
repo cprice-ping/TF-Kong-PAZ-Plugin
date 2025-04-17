@@ -17,3 +17,13 @@ dsconfig set-policy-decision-service-prop \
 	--set pdp-mode:external \
 	--set policy-server:pingauthorizepap \
 	--set trust-framework-version:v2
+
+dsconfig create-external-server \
+	--server-name "PingOne OIDC" \
+	--type http \
+	--set base-url:${PINGONE_OIDC_PROVIDER}
+
+dsconfig create-access-token-validator 
+	--validator-name "PingOne OIDC" 
+	--type jwt --set enabled:true 
+	--set "authorization-server:PingOne OIDC"
