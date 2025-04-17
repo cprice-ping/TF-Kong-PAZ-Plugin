@@ -27,6 +27,7 @@ pingauthorizepap:
     PING_OIDC_CONFIGURATION_ENDPOINT: ${oidcWellKnownEndpoint}
     PING_CLIENT_ID: ${clientId}
     PING_SCOPE: "openid email profile phone"
+    PING_OIDC_USER_CLAIM: "preferred_username"
     SERVER_PROFILE_URL: https://github.com/cprice-ping/TF-Kong-PAZ-Plugin.git
     SERVER_PROFILE_PATH: server-profiles/pingauthorizepap
     
