@@ -23,8 +23,3 @@ dsconfig create-external-server \
 	--type http \
 	--set base-url:${PINGONE_OIDC_PROVIDER}
 
-dsconfig create-access-token-validator \
-	--validator-name "PingOne OIDC" \
-	--type jwt \
-	--set enabled:true \
-	--set "authorization-server:PingOne OIDC"
