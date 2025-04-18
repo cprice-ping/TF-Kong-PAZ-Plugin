@@ -63,14 +63,14 @@ variable "kong_media_permissions" {
     description = string
   }))
   default = {
-    "read" = {
+    "one" = {
       action      = "Read_All"
       description = "Read all Metadata"
     },
-    "create" = {
+    "two" = {
       action      = "Read_One"
       description = "Read single Metadata object"
-    },
+    }
   }
 }
 
@@ -82,6 +82,67 @@ resource "pingone_application_resource_permission" "media_permissions" {
 
   action      = each.value.action
   description = each.value.description
+}
+
+resource "pingone_application_resource" "kong_account_resource" {
+  environment_id = pingone_environment.kong_token_provider.id
+  resource_name  = pingone_resource.kong_resource.name
+
+  name        = "Account"
+  description = "Account API controls"
+}
+
+variable "kong_account_permissions" {
+  type = map(object({
+    action      = string
+    description = string
+  }))
+  default = {
+    "one" = {
+      action      = "manage_subscription"
+      description = "Manage Account subscription(s)"
+    },
+    "two" = {
+      action      = "manage_account"
+      description = "Manage Account and Billing"
+    },
+    "read" = {
+      action      = "manage_profile"
+      description = "Manage Profiles"
+    }
+  }
+}
+
+resource "pingone_application_resource_permission" "account_permissions" {
+  for_each = var.kong_account_permissions
+
+  environment_id          = pingone_environment.kong_token_provider.id
+  application_resource_id = pingone_application_resource.kong_account_resource.id
+
+  action      = each.value.action
+  description = each.value.description
+}
+
+resource "pingone_authorize_application_role" "profile" {
+  environment_id = pingone_environment.kong_token_provider.id
+
+  name        = "Profile"
+  description = "Permissions used to access Content"
+}
+
+resource "pingone_authorize_application_role" "primary" {
+  environment_id = pingone_environment.kong_token_provider.id
+
+  name        = "Primary"
+  description = "Permissions used to manage Account"
+}
+
+resource "pingone_authorize_application_role_permission" "primary" {
+  for_each = pingone_application_resource_permission.account_permissions
+  environment_id = pingone_environment.kong_token_provider.id
+
+  application_role_id                = pingone_authorize_application_role.primary.id
+  application_resource_permission_id = each.value.id
 }
 
 resource "pingone_authorize_api_service" "media_api_service" {
@@ -97,6 +158,14 @@ resource "pingone_authorize_api_service" "media_api_service" {
     resource_id = pingone_resource.kong_resource.id
     type        = "PINGONE_SSO"
   }
+}
+
+resource "pingone_authorize_application_role_permission" "profile" {
+  for_each = pingone_application_resource_permission.media_permissions
+  environment_id = pingone_environment.kong_token_provider.id
+
+  application_role_id                = pingone_authorize_application_role.profile.id
+  application_resource_permission_id = each.value.id
 }
 
 resource "pingone_authorize_api_service_operation" "media_metadata_operation" {

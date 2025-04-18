@@ -28,7 +28,7 @@ resource "kubernetes_config_map" "kong_declarative_config" {
   # PAZ \ PAP Values
   # data = {
   #   "kong.yml" = templatefile("./kong-declarative.yaml.tpl", {
-  #     pluginSharedSecret = var.pluginSecret,
+  #     pluginSharedSecret = var.pluginSharedSecret,
   #     serviceUrl = "https://${var.deployName}-pingauthorize"
   #   })
   # }
